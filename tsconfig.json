@@ -2,7 +2,7 @@
   "compilerOptions": {
     "incremental": true,
     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
-    "module": "commonjs",
+    "module": "ESNext",
     "target": "es2018",
     "lib": [
       "es2018"

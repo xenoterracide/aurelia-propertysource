@@ -1,0 +1,9 @@
+{
+  "name": "aurelia-propertysource",
+  "version": "0.1.0",
+  "description": "Spring Like PropertySource for Aurelia 2",
+  "main": "index.js",
+  "repository": "https://github.com/xenoterracide/aurelia-propertysource",
+  "author": "Caleb Cushing <xenoterracide@gmail.com>",
+  "license": "MIT"
+}

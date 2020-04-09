@@ -11,6 +11,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["ava"],
       "outputCapture": "std",
+      "console": "integratedTerminal",
       "port": 9229,
       "skipFiles": ["<node_internals>/**", "**/*.json"],
       "args": [

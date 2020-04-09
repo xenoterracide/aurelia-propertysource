@@ -11,7 +11,9 @@
     "test": "npx jest"
   },
   "dependencies": {
-    "@aurelia/kernel": "^0.7.0-dev.202004062202"
+    "@aurelia/kernel": "^0.7.0-dev.202004080424",
+    "@aurelia/metadata": "^0.7.0-dev.202004080424",
+    "jsonpath-plus": "^3.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
@@ -19,6 +21,7 @@
     "@types/node": "^13.11.0",
     "chai": "^4.2.0",
     "jest": "^25.2.7",
+    "reflect-metadata": "^0.1.13",
     "ts-jest": "^25.3.1",
     "typescript": "^3.8.3"
   }

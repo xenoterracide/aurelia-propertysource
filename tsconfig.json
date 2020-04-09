@@ -3,9 +3,9 @@
     "incremental": true,
     /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */
     "module": "ESNext",
-    "target": "es2018",
+    "target": "es2020",
     "lib": [
-      "es2018"
+      "es2020"
     ],
     "sourceMap": true,
     "outDir": "dist/",

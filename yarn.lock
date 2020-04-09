@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@aurelia/kernel@^0.7.0-dev.202004062202":
-  version "0.7.0-dev.202004062202"
-  resolved "https://registry.yarnpkg.com/@aurelia/kernel/-/kernel-0.7.0-dev.202004062202.tgz#a2f45d9895cd26a2494383f7d620da133ffa1ddd"
-  integrity sha512-9Pw45uS6g/tEnRKORA+W5W4zNnOJTWkYZKMNQcOBv47qDCY01VexFM/EkDJA1bnJnsot2qMvU3kChdvwcmZNXQ==
+"@aurelia/kernel@^0.7.0-dev.202004080424":
+  version "0.7.0-dev.202004080424"
+  resolved "https://registry.yarnpkg.com/@aurelia/kernel/-/kernel-0.7.0-dev.202004080424.tgz#c17f5c99e6a79d5ce3cdcbc6037807004fa84b64"
+  integrity sha512-8MOF/nKh1s9uQSl74Y3EheGn7NDWo6fa/xLAn2QFprHYt5XAqutIjTDuJToSeswLZfJHY720H8qLt30LT5A9Yw==
   dependencies:
-    "@aurelia/metadata" "^0.7.0-dev.202004062202"
+    "@aurelia/metadata" "^0.7.0-dev.202004080424"
 
-"@aurelia/metadata@^0.7.0-dev.202004062202":
-  version "0.7.0-dev.202004062202"
-  resolved "https://registry.yarnpkg.com/@aurelia/metadata/-/metadata-0.7.0-dev.202004062202.tgz#e5d153420c6e7ca873dd4c5f48ebdfb015caf792"
-  integrity sha512-h8evFVjPlNsCyo+BewSp2tTEEBj7c3UmPWdx7s2buoiXU7tIGvZ2rKGJ8Tuaa3e04ymzvdyQaJjtuJ/1BYAQiA==
+"@aurelia/metadata@^0.7.0-dev.202004080424":
+  version "0.7.0-dev.202004080424"
+  resolved "https://registry.yarnpkg.com/@aurelia/metadata/-/metadata-0.7.0-dev.202004080424.tgz#6b3becd0b22c7c082ea139fbe6cfb80339386eb4"
+  integrity sha512-mQnsBOEERIBIHJ5Kp0NnvSgtKlS9n0iFAFTq53h+XhZTWL+Z34OOQFjTX1rOsnP3ew4yzLXDkjH1FGQoE18rAQ==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.8.3":
   version "7.8.3"
@@ -2151,6 +2151,11 @@ json5@2.x, json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
+jsonpath-plus@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jsonpath-plus/-/jsonpath-plus-3.0.0.tgz#194ab4792a5e9b4ed27bf442188c8eb7e697a04b"
+  integrity sha512-WQwgWEBgn+SJU1tlDa/GiY5/ngRpa9yrSj8n4BYPHcwoxTDaMEaYCHMOn42hIHHDd3CrUoRr3+HpsK0hCKoxzA==
+
 jsprim@^1.2.2:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jsprim/-/jsprim-1.4.1.tgz#313e66bc1e5cc06e438bc1b7499c2e5c56acb6a2"
@@ -2643,6 +2648,11 @@ realpath-native@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/realpath-native/-/realpath-native-2.0.0.tgz#7377ac429b6e1fd599dc38d08ed942d0d7beb866"
   integrity sha512-v1SEYUOXXdbBZK8ZuNgO4TBjamPsiSgcFr0aP+tEKpQZK8vooEUqV6nm6Cv502mX4NF2EfsnVqtNAHG+/6Ur1Q==
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 regex-not@^1.0.0, regex-not@^1.0.2:
   version "1.0.2"

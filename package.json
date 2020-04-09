@@ -7,8 +7,9 @@
   "author": "Caleb Cushing <xenoterracide@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "npx tsc --build --pretty",
-    "test": "npx jest"
+    "build": "npx tsc --build",
+    "test": "npx nyc ava --color test/**.ts",
+    "clean": "npx rimraf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {
     "@aurelia/kernel": "^0.7.0-dev.202004080424",
@@ -16,13 +17,32 @@
     "jsonpath-plus": "^3.0.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/jest": "^25.2.1",
+    "@ava/typescript": "^1.1.1",
     "@types/node": "^13.11.0",
-    "chai": "^4.2.0",
-    "jest": "^25.2.7",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "ava": "^3.6.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
+    "esm": "^3.2.25",
+    "nyc": "^15.0.1",
+    "prettier": "^2.0.4",
     "reflect-metadata": "^0.1.13",
-    "ts-jest": "^25.3.1",
+    "rimraf": "^3.0.2",
+    "source-map-support": "^0.5.16",
+    "ts-node": "^8.8.2",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.8.3"
+  },
+  "ava": {
+    "color": true,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "source-map-support/register",
+      "ts-node/register",
+      "esm"
+    ]
   }
 }

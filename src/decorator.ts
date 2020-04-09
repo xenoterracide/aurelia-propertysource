@@ -1,7 +1,7 @@
-import { JSONPath } from 'jsonpath-plus'
+import { JSONPath } from 'jsonpath-plus';
 
 export function value(property: string): Function {
-    return function () {
+    return function (): void {
         const res = JSONPath({
             wrap: false,
             path: property, json: {
@@ -10,7 +10,5 @@ export function value(property: string): Function {
                 }
             }
         });
-        console.log(res);
     }
 }
-

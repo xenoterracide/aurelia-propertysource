@@ -9,24 +9,16 @@
       "request": "launch",
       "name": "This Test",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["ava"],
-      "outputCapture": "std",
-      "console": "integratedTerminal",
-      "port": 9229,
-      "skipFiles": ["<node_internals>/**", "**/*.json"],
+      "runtimeArgs": [
+        "--node-arg",
+      ],
       "args": [
-        "debug",
-        "--break",
-        "--serial",
-        "--color",
-        "--require",
-        "source-map-support/register",
-        "--require",
-        "ts-node/register",
-        "--require",
-        "esm",
+        "jest",
+        "--runInBand",
         "${relativeFile}"
-      ]
+      ],
+      "outputCapture": "std",
+      "skipFiles": ["<node_internals>/**", "**/*.json"]
     }
   ]
 }

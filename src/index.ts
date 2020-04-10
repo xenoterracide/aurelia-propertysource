@@ -1,4 +1,0 @@
-function start() {
-}
-
-start();

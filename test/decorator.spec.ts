@@ -4,11 +4,11 @@ import { value } from '../src/decorator';
 
 const test = anyTest as TestInterface<IContainer>;
 
-test.before((t) => {
+test.beforeEach((t) => {
     t.context = DI.createContainer();
 });
 
-test('test', (t) => {
+test.skip('test', (t) => {
     class Foo {
         constructor (@value('test') readonly string: string) {
         }

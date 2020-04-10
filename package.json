@@ -14,7 +14,8 @@
   "dependencies": {
     "@aurelia/kernel": "^0.7.0-dev.202004080424",
     "@aurelia/metadata": "^0.7.0-dev.202004080424",
-    "jsonpath-plus": "^3.0.0"
+    "constant-case": "^3.0.3",
+    "jsonpath-plus": "^4"
   },
   "devDependencies": {
     "@ava/typescript": "^1.1.1",

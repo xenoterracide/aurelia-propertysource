@@ -1,17 +1,20 @@
 import { constantCase } from 'constant-case';
 import { JSONPath } from 'jsonpath-plus';
 
-export interface PropertySource<T> {
+interface Getter<K, T> {
+    has (key: K): boolean;
+    get (key: string): T;
+}
+
+export interface PropertySource<T = unknown> extends Getter<string, unknown | undefined> {
     readonly name: string;
     readonly source: T;
-    has (key: string): boolean;
-    get (key: string): unknown | undefined;
 }
 
 export interface EnumerablePropertySource<T> extends PropertySource<T> {
-
     keys (): Iterable<string>;
 }
+
 
 export class MapPropertySource<T = unknown> implements EnumerablePropertySource<Map<string, T>> {
 
@@ -30,8 +33,33 @@ export class MapPropertySource<T = unknown> implements EnumerablePropertySource<
     }
 }
 
-export interface KVSource<T = boolean | number | string | KVSource<any>> {
+export interface KVSource<T = boolean | number | string | KVSource<unknown>> {
     [ key: string ]: T | undefined;
+}
+
+export interface PropertySources extends Getter<string, PropertySource>, Iterable<PropertySource> {
+}
+
+export class ImmutablePropertySources implements PropertySources {
+
+    readonly #map: Map<string, PropertySource>;
+    readonly #list: Array<PropertySource>;
+
+    constructor (propertySources: PropertySource[]) {
+        this.#map = new Map(propertySources.map(ps => [ ps.name, ps ]));
+        this.#list = propertySources;
+    }
+    [ Symbol.iterator ] (): Iterator<PropertySource<unknown>, any, undefined> {
+        return this.#list[ Symbol.iterator ]();
+    }
+
+    has (key: string): boolean {
+        return this.#map.has(key);
+    }
+    get (key: string): PropertySource<unknown> {
+        return this.get(key);
+    }
+
 }
 
 export class ObjectPropertySource implements PropertySource<KVSource<string | KVSource>> {

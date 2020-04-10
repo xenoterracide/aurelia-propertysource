@@ -1,0 +1,7 @@
+{
+  "verbose": true,
+  "rootDir": "src",
+  "transform": {
+    "\\.ts$": ["ts-jest"]
+  }
+}

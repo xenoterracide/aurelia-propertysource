@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npx tsc --build",
     "test": "npx jest --collect-coverage",
-    "clean": "npx rimraf dist test/dist **/coverage **/tsconfig.tsbuildinfo"
+    "clean": "npx rimraf dist test/dist **/coverage **/tsconfig.tsbuildinfo && npx jest --clearCache"
   },
   "dependencies": {
     "@aurelia/kernel": "^0.7.0-dev.202004080424",

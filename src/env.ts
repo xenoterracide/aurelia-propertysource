@@ -62,7 +62,7 @@ export class ImmutablePropertySources extends Array<PropertySource> implements P
     constructor(ps: PropertySource, ...propertySources: PropertySource[]) {
         super();
         this.push(ps, ...propertySources);
-        this.myMap = new Map(propertySources.map((ps) => [ps.name, ps]));
+        this.myMap = new Map([ps, ...propertySources].map((ps) => [ps.name, ps]));
         if (this.length !== this.myMap.size) {
             throw new Error(`you should not have duplicate named property sources ${this.map((p) => p.name)}`);
         }

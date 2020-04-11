@@ -9,14 +9,8 @@
       "request": "launch",
       "name": "This Test",
       "runtimeExecutable": "npx",
-      "runtimeArgs": [
-        "--node-arg",
-      ],
-      "args": [
-        "jest",
-        "--runInBand",
-        "${relativeFile}"
-      ],
+      "runtimeArgs": ["--node-arg"],
+      "args": ["jest", "--runInBand", "--color", "${relativeFile}"],
       "outputCapture": "std",
       "skipFiles": ["<node_internals>/**", "**/*.json"]
     }

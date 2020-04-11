@@ -1,6 +1,5 @@
 import { constantCase } from 'constant-case';
 import { JSONPath } from 'jsonpath-plus';
-import { value } from './decorator';
 import { DI, optional } from '@aurelia/kernel';
 
 export const RequiredProperties = DI.createInterface<Array<string>>('RequiredProperties').noDefault();
@@ -59,18 +58,18 @@ export class PropertySourcesPropertyResolver implements PropertyResolver {
 }
 
 export class ImmutablePropertySources extends Array<PropertySource> implements PropertySources {
-    readonly #map: Map<string, PropertySource>;
+    private readonly myMap: Map<string, PropertySource>;
     constructor(ps: PropertySource, ...propertySources: PropertySource[]) {
         super();
         this.push(ps, ...propertySources);
-        this.#map = new Map(propertySources.map((ps) => [ps.name, ps]));
-        if (this.length !== this.#map.size) {
+        this.myMap = new Map(propertySources.map((ps) => [ps.name, ps]));
+        if (this.length !== this.myMap.size) {
             throw new Error(`you should not have duplicate named property sources ${this.map((p) => p.name)}`);
         }
     }
 
     has(key: string): boolean {
-        return this.#map.has(key);
+        return this.myMap.has(key);
     }
     get(key: string): PropertySource<unknown> {
         return this.get(key);

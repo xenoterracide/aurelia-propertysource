@@ -6,7 +6,7 @@ import {
     PropertySourcesPropertyResolver,
 } from '../src/env';
 
-describe(`${PropertySourcesPropertyResolver}`, () => {
+describe(`${PropertySourcesPropertyResolver.name}`, () => {
     const envS = new ProcessEnvironmentPropertySource('env', {
         LOG_LEVEL: 'trace',
     });

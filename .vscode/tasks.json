@@ -13,15 +13,9 @@
       "label": "tsc: watch - tsconfig.json"
     },
     {
-      "type": "typescript",
-      "tsconfig": "tsconfig.json",
-      "option": "watch",
-      "problemMatcher": ["$tsc-watch"],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "label": "tsc: watch - tsconfig.json"
+      "type": "npm",
+      "script": "clean:jest",
+      "label": "clean:jest"
     }
   ]
 }

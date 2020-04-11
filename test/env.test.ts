@@ -1,13 +1,10 @@
-import { PropertySource } from '../../dist/env';
-import { PropertySourceResolver } from '../EnvironmentResolver';
 import {
     ImmutablePropertySources,
     MapPropertySource,
     ObjectPropertySource,
     ProcessEnvironmentPropertySource,
     PropertySourcesPropertyResolver,
-} from '../env';
-import { LogLevel } from '@aurelia/kernel';
+} from '../src/env';
 
 describe(`${PropertySourcesPropertyResolver}`, () => {
     const envS = new ProcessEnvironmentPropertySource('env', {

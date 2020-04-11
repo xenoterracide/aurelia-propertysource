@@ -39,10 +39,10 @@ describe(`${PropertySourcesPropertyResolver.name}`, () => {
         expect(resolver.has('log.format')).toBe(true);
         expect(resolver.has('log.file')).toBe(true);
 
-        expect(resolver.has('log.level')).toBe('trace');
-        expect(resolver.has('log.dest')).toBe('file');
-        expect(resolver.has('log.format')).toBe('theirformat');
-        expect(resolver.has('log.file')).toBe('my.log');
+        expect(resolver.get('log.level')).toBe('trace');
+        expect(resolver.get('log.dest')).toBe('file');
+        expect(resolver.get('log.format')).toBe('theirformat');
+        expect(resolver.get('log.file')).toBe('my.log');
     });
 });
 

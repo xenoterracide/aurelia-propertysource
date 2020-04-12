@@ -45,15 +45,15 @@ export interface KVSource<T = boolean | number | string | KVSource<unknown>> {
 export interface PropertySources extends Getter<string, PropertySource>, Array<PropertySource> {}
 
 export class StandardEnvironment implements Environment {
-    readonly #propertySources: PropertySources;
+    readonly propertySources: PropertySources;
     constructor(propertySources: PropertySources) {
-        this.#propertySources = propertySources;
+        this.propertySources = propertySources;
     }
     has(key: string): boolean {
-        return this.#propertySources.some((ps) => ps.has(key));
+        return this.propertySources.some((ps) => ps.has(key));
     }
     get<T = unknown>(key: string): T | unknown | undefined {
-        return this.#propertySources.find((ps) => ps.has(key))?.get(key);
+        return this.propertySources.find((ps) => ps.has(key))?.get(key);
     }
     getActiveProfiles(): Profiles[] {
         throw new Error('Method not implemented.');
@@ -64,18 +64,18 @@ export class StandardEnvironment implements Environment {
 }
 
 export class ImmutablePropertySources extends Array<PropertySource> implements PropertySources {
-    readonly #map: Map<string, PropertySource>;
+    readonly myMap: Map<string, PropertySource>;
     constructor(...propertySources: PropertySource[]) {
         super();
         this.push(...propertySources);
-        this.#map = new Map(propertySources.map((ps) => [ps.name, ps]));
-        if (this.length !== this.#map.size) {
+        this.myMap = new Map(propertySources.map((ps) => [ps.name, ps]));
+        if (this.length !== this.myMap.size) {
             throw new Error(`you should not have duplicate named property sources ${this.map((p) => p.name)}`);
         }
     }
 
     has(key: string): boolean {
-        return this.#map.has(key);
+        return this.myMap.has(key);
     }
     get(key: string): PropertySource<unknown> {
         return this.get(key);

@@ -4,7 +4,7 @@ import { Environment, ImmutablePropertySources, ObjectPropertySource, StandardEn
 
 describe(`Aurelia DI test`, () => {
     const myDefault = new ObjectPropertySource('default', {
-        A: 1,
+        a: 1,
     });
 
     test(`test`, () => {

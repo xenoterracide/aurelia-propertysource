@@ -13,7 +13,6 @@ describe(`Aurelia DI test`, () => {
             Registration.instance(Environment, new StandardEnvironment(new ImmutablePropertySources(myDefault)))
         );
         container.register(property('a'));
-
-        expect(container.get(Environment).get('a')).toBe(1);
+        expect(container.get('a')).toBe(1);
     });
 });

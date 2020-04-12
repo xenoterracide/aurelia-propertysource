@@ -8,7 +8,6 @@
       "type": "node",
       "request": "launch",
       "name": "This Test",
-      "postDebugTask": "clean:jest",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["--node-arg"],
       "args": ["jest", "--runInBand", "--color", "${relativeFile}"],

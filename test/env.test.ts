@@ -3,10 +3,10 @@ import {
     MapPropertySource,
     ObjectPropertySource,
     ProcessEnvironmentPropertySource,
-    PropertySourcesPropertyResolver,
+    StandardEnvironment,
 } from '../src/env';
 
-describe(`${PropertySourcesPropertyResolver.name}`, () => {
+describe(`${StandardEnvironment.name}`, () => {
     const envS = new ProcessEnvironmentPropertySource('env', {
         LOG_LEVEL: 'trace',
     });
@@ -32,7 +32,7 @@ describe(`${PropertySourcesPropertyResolver.name}`, () => {
     );
 
     test(`prod order`, () => {
-        const resolver = new PropertySourcesPropertyResolver(new ImmutablePropertySources(envS, altS, objS, mapS));
+        const resolver = new StandardEnvironment(new ImmutablePropertySources(envS, altS, objS, mapS));
 
         expect(resolver.has('log.level')).toBe(true);
         expect(resolver.has('log.dest')).toBe(true);
@@ -43,20 +43,6 @@ describe(`${PropertySourcesPropertyResolver.name}`, () => {
         expect(resolver.get('log.dest')).toBe('file');
         expect(resolver.get('log.format')).toBe('theirformat');
         expect(resolver.get('log.file')).toBe('my.log');
-    });
-
-    test(`normal order`, () => {
-        const resolver = new PropertySourcesPropertyResolver(new ImmutablePropertySources(envS, objS, mapS));
-
-        expect(resolver.has('log.level')).toBe(true);
-        expect(resolver.has('log.dest')).toBe(true);
-        expect(resolver.has('log.format')).toBe(true);
-        expect(resolver.has('log.file')).toBe(false);
-
-        expect(resolver.get('log.level')).toBe('trace');
-        expect(resolver.get('log.dest')).toBe('console');
-        expect(resolver.get('log.format')).toBe('theirformat');
-        expect(resolver.get('log.file')).toBe(undefined);
     });
 });
 

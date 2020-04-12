@@ -1,4 +1,4 @@
-import { DI, IContainer, Registration } from '@aurelia/kernel';
+import { DI, IContainer, inject, Registration } from '@aurelia/kernel';
 import { property, value } from '../src/di';
 import { Environment, ImmutablePropertySources, ObjectPropertySource, StandardEnvironment } from '../src/env';
 
@@ -15,14 +15,23 @@ describe(`Aurelia DI test`, () => {
         );
     });
 
-    test('direct get', () => {
-        container.register(property('a'));
-        expect(container.get('a')).toBe(1);
-    });
-
-    test('get injected', () => {
+    test('test value', () => {
         class Foo {
             constructor(@value('myprop') readonly myprop: string) {}
+        }
+
+        expect(container.get(Foo).myprop).toBe(1);
+    });
+
+    test('direct get', () => {
+        container.register(property('myprop'));
+        expect(container.get('myprop')).toBe(1);
+    });
+
+    test('inject into a dependency', () => {
+        container.register(property('myprop'));
+        class Foo {
+            constructor(@inject('myprop') readonly myprop: string) {}
         }
 
         expect(container.get(Foo).myprop).toBe(1);

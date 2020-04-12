@@ -21,7 +21,6 @@ export function property(key: string): IResolver {
 export function valueDecorator(property: string): Function {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return function (ctor: Constructable, _: undefined, position: number): IResolver {
-        const data: [string, number] = [property, position];
         return new EnvironmentResolver(property);
     };
 }

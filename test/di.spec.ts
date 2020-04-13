@@ -1,5 +1,5 @@
 import { DI, IContainer, inject, Registration } from '@aurelia/kernel';
-import { property, value } from '../src/di';
+import { EnvironmentResolver, value } from '../src/di';
 import { Environment, ImmutablePropertySources, ObjectPropertySource, StandardEnvironment } from '../src/env';
 
 describe(`Aurelia DI test`, () => {
@@ -15,7 +15,7 @@ describe(`Aurelia DI test`, () => {
         );
     });
 
-    test.skip('test value', () => {
+    test('test value', () => {
         class Foo {
             constructor(@value('myprop') readonly myprop: string) {}
         }
@@ -24,12 +24,12 @@ describe(`Aurelia DI test`, () => {
     });
 
     test('direct get', () => {
-        container.register(property('myprop'));
+        container.register(new EnvironmentResolver('myprop'));
         expect(container.get('myprop')).toBe(1);
     });
 
     test('inject into a dependency', () => {
-        container.register(property('myprop'));
+        container.register(new EnvironmentResolver('myprop'));
         class Foo {
             constructor(@inject('myprop') readonly myprop: string) {}
         }

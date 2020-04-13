@@ -15,7 +15,7 @@ describe(`Aurelia DI test`, () => {
         );
     });
 
-    test('test value', () => {
+    test.skip('test value', () => {
         class Foo {
             constructor(@value('myprop') readonly myprop: string) {}
         }

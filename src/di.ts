@@ -1,19 +1,29 @@
 /// <reference types="reflect-metadata" />
 import '@aurelia/metadata';
-import { DI, IContainer, IRegistration, IResolver, Resolved } from '@aurelia/kernel';
+import {
+  DI,
+  IContainer,
+  IRegistration,
+  IResolver,
+  Resolved,
+} from '@aurelia/kernel';
 import { Environment } from './env';
 
 export class EnvironmentResolver implements IResolver, IRegistration {
-    constructor(private readonly key: string) {}
+  constructor(private readonly key: string) {}
 
-    register(container: IContainer): IResolver<void> {
-        return container.registerResolver(this.key, this);
-    }
-    resolve(handler: IContainer): Resolved<unknown> {
-        return handler.get(Environment).get(this.key);
-    }
+  get $isResolver(): true {
+    return true;
+  }
+
+  register(container: IContainer): IResolver<void> {
+    return container.registerResolver(this.key, this);
+  }
+  resolve(handler: IContainer): Resolved<unknown> {
+    return handler.get(Environment).get(this.key);
+  }
 }
 
 export function value<T extends string>(target: T): Function {
-    return DI.inject(new EnvironmentResolver(target!));
+  return DI.inject(new EnvironmentResolver(target));
 }

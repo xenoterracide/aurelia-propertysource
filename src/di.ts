@@ -7,7 +7,7 @@ import {
   IResolver,
   Resolved,
 } from '@aurelia/kernel';
-import { Environment } from './env';
+import { Environment } from './environment';
 
 export class EnvironmentResolver implements IResolver, IRegistration {
   constructor(private readonly key: string) {}

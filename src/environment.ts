@@ -2,7 +2,6 @@ import { constantCase } from 'constant-case';
 import { readFile } from 'fs';
 import { JSONPath } from 'jsonpath-plus';
 import { DI } from '@aurelia/kernel';
-import { value } from './di';
 
 export const RequiredProperties = DI.createInterface<Array<string>>(
   'RequiredProperties'
@@ -10,6 +9,10 @@ export const RequiredProperties = DI.createInterface<Array<string>>(
 export const Environment = DI.createInterface<Environment>(
   'Environment'
 ).noDefault();
+
+type Value = undefined | unknown;
+type TypedValue<T> = undefined | T;
+type Converter<T> = (value: Value) => T;
 
 export interface Environment extends PropertyResolver {
   getActiveProfiles(): Profiles[];
@@ -21,18 +24,24 @@ export interface Profiles {
 }
 
 export interface PropertyResolver {
-  has(key: string): Promise<boolean>;
-  get(key: string): Promise<unknown | undefined>;
-  get<T>(key: string): Promise<T | undefined>;
+  hasAsync(key: string): Promise<boolean>;
+  getAsync<T>(key: string, converter?: Converter<T>): Promise<TypedValue<T>>;
+  has(key: string): boolean;
+
+  get(key: string): Value;
+  get<T>(key: string, converter: Converter<T>): TypedValue<T>;
 }
 
 export interface PropertySource<T = unknown> {
   readonly name: string;
   readonly source: T;
 
-  load(): Promise<void>;
-  has(key: string): Promise<boolean>;
-  get(key: string): Promise<unknown | undefined>;
+  load(keys: string[]): Promise<void>;
+
+  hasAsync(key: string): Promise<boolean>;
+  getAsync(key: string): Promise<unknown | undefined>;
+  has(key: string): boolean;
+  get(key: string): unknown | undefined;
 }
 
 export interface EnumerablePropertySource<T> extends PropertySource<T> {
@@ -46,6 +55,7 @@ export interface KVSource<T = boolean | number | string | KVSource<unknown>> {
 export interface PropertySources extends Array<PropertySource> {
   has(propertySource: string): boolean;
   get(propertySource: string): PropertySource | undefined;
+  loadAll(keys: string[]): Promise<unknown>;
 }
 
 export class StandardEnvironment implements Environment {
@@ -53,12 +63,32 @@ export class StandardEnvironment implements Environment {
   constructor(propertySources: PropertySources) {
     this.propertySources = propertySources;
   }
-  async has(key: string): Promise<boolean> {
+  get(key: string): unknown;
+  get<T>(
+    key: string,
+    converter: (value: unknown | undefined) => T
+  ): T | undefined;
+  get<T = unknown>(
+    key: string,
+    converter?: (value: unknown | undefined) => T
+  ): T | unknown | undefined {
+    const conv = converter ?? ((value: unknown): unknown => value);
+    return conv(this.propertySources.find((ps) => ps.has(key))?.get(key));
+  }
+  getAsync<T>(
+    key: string,
+    converter?: ((value: unknown) => T) | undefined
+  ): Promise<T | undefined> {
+    throw new Error('Method not implemented.');
+  }
+  has(key: string): boolean {
+    throw new Error('Method not implemented.');
+  }
+
+  async hasAsync(key: string): Promise<boolean> {
     return this.propertySources.some(async (ps) => await ps.has(key));
   }
-  async get<T = unknown>(key: string): Promise<T | unknown | undefined> {
-    return this.propertySources.find(async (ps) => await ps.has(key))?.get(key);
-  }
+
   getActiveProfiles(): Profiles[] {
     throw new Error('Method not implemented.');
   }
@@ -82,6 +112,9 @@ export class ImmutablePropertySources extends Array<PropertySource>
       );
     }
   }
+  async loadAll(keys: string[]): Promise<unknown> {
+    return Promise.all(this.map((ps) => ps.load(keys)));
+  }
 
   has(key: string): boolean {
     return this.myMap.has(key);
@@ -94,6 +127,7 @@ export class ImmutablePropertySources extends Array<PropertySource>
 export class MapPropertySource<T = unknown>
   implements EnumerablePropertySource<Map<string, T>> {
   constructor(readonly name: string, readonly source: Map<string, T>) {}
+
   async load(): Promise<void> {
     return;
   }
@@ -102,25 +136,40 @@ export class MapPropertySource<T = unknown>
     return this.source.keys();
   }
 
-  async has(key: string): Promise<boolean> {
+  async hasAsync(key: string): Promise<boolean> {
+    return this.has(key);
+  }
+  async getAsync(key: string): Promise<unknown> {
+    return this.get(key);
+  }
+
+  has(key: string): boolean {
     return this.source.has(key);
   }
 
-  async get(key: string): Promise<T | undefined> {
+  get(key: string): T | undefined {
     return this.source.get(key);
   }
 }
 
 export class ObjectPropertySource implements PropertySource<KVSource> {
   public constructor(readonly name: string, public source: KVSource) {}
+
   async load(): Promise<void> {
     return;
   }
-  async has(key: string): Promise<boolean> {
-    const res = JSONPath({ path: key, json: this.source ?? {}, wrap: false });
+
+  async hasAsync(key: string): Promise<boolean> {
+    return this.has(key);
+  }
+  async getAsync(key: string): Promise<unknown> {
+    return this.get(key);
+  }
+  has(key: string): boolean {
+    const res = JSONPath({ path: key, json: this.source, wrap: false });
     return res !== undefined;
   }
-  async get(key: string): Promise<undefined | unknown> {
+  get(key: string): Promise<undefined | unknown> {
     return JSONPath({ path: key, json: this.source, wrap: false });
   }
 }
@@ -132,10 +181,27 @@ export class DelegatingCachingPropertySouce implements PropertySource {
   constructor(readonly source: PropertySource) {
     this.name = source.name;
   }
-  load(): Promise<void> {
-    return this.source.load();
+  async hasAsync(key: string): Promise<boolean> {
+    let has = this.has(key);
+    if (has) return has;
+    has = await this.source.hasAsync(key);
+    if (has) {
+      const value = await this.source.getAsync(key);
+      this.cache.set(key, value);
+    }
+    return this.has(key);
   }
-  async has(key: string): Promise<boolean> {
+  async getAsync(key: string): Promise<unknown> {
+    const has = this.has(key);
+    if (has) return this.get(key);
+    const value = await this.source.getAsync(key);
+    if (value) this.cache.set(key, value);
+    return this.getAsync(key);
+  }
+  load(keys: string[]): Promise<void> {
+    return this.source.load(keys);
+  }
+  has(key: string): boolean {
     const has = this.cache.has(key);
     if (has) return has;
     const value = this.source.get(key);
@@ -143,7 +209,7 @@ export class DelegatingCachingPropertySouce implements PropertySource {
     return this.has(key);
   }
 
-  async get(key: string): Promise<unknown | undefined> {
+  get(key: string): unknown | undefined {
     const has = this.cache.has(key);
     if (!has) return undefined;
     return this.get(key);
@@ -168,20 +234,25 @@ export class ObjectFilePropertySource extends ObjectPropertySource {
     });
   }
 }
-
 export class ProcessEnvironmentPropertySource
   implements EnumerablePropertySource<KVSource<string>> {
   constructor(readonly name: string, readonly source: KVSource<string>) {}
+  async hasAsync(key: string): Promise<boolean> {
+    return this.has(key);
+  }
+  async getAsync(key: string): Promise<unknown> {
+    return this.get(key);
+  }
   async load(): Promise<void> {
     return;
   }
   keys(): Iterable<string> {
     return Object.keys(this.source);
   }
-  async has(key: string): Promise<boolean> {
+  has(key: string): boolean {
     return this.source[constantCase(key)] !== undefined;
   }
-  async get(key: string): Promise<string | undefined> {
+  get(key: string): string | undefined {
     return this.source[constantCase(key)];
   }
 }
